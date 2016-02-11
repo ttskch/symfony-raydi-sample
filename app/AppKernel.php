@@ -1,10 +1,32 @@
 <?php
 
+use AppBundle\RayDi\AppModule;
+use AppBundle\RayDi\SymfonyContainerBridge;
+use Ray\Di\Injector;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContainerBaseClass()
+    {
+        return SymfonyContainerBridge::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initializeContainer()
+    {
+        parent::initializeContainer();
+
+        $injector = new Injector(new AppModule);
+        $this->getContainer()->setInjector($injector);
+    }
+
     public function registerBundles()
     {
         $bundles = array(
